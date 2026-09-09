@@ -43,7 +43,7 @@ const MODULES = {
       { name: 'companyAddress', label: 'Company address (for invoice billing address)', type: 'text' },
       { name: 'location', label: 'Location / venue (delivery address)', type: 'text' },
       { name: 'customerId', label: 'Linked customer record (optional)', type: 'select', source: 'customers', optLabel: 'name' },
-      { name: 'startDate', label: 'Start date', type: 'date' },
+      { name: 'startDate', label: 'Start date', type: 'date', default: 'today' },
       { name: 'endDate', label: 'End date', type: 'date' },
       { name: 'amount', label: 'Amount (₹) — total for the whole booking', type: 'number' },
       { name: 'status', label: 'Status', type: 'select', options: ['pending','confirmed','completed','cancelled'] }
@@ -173,7 +173,7 @@ const MODULES = {
     fields: [
       { name: 'number', label: 'Invoice number', type: 'text', required: true },
       { name: 'customerId', label: 'Customer', type: 'select', source: 'customers', optLabel: 'name' },
-      { name: 'date', label: 'Date', type: 'date' },
+      { name: 'date', label: 'Date', type: 'date', default: 'today' },
       { name: 'amount', label: 'Amount (₹)', type: 'number' },
       { name: 'status', label: 'Status', type: 'select', options: ['unpaid','partial','paid'] },
       { name: 'paidAmount', label: 'Amount paid so far (₹)', type: 'number', showIf: { field: 'status', equals: 'partial' } }
@@ -211,7 +211,7 @@ const MODULES = {
       { label: 'Mode', field: 'mode' }
     ],
     fields: [
-      { name: 'date', label: 'Date', type: 'date', required: true },
+      { name: 'date', label: 'Date', type: 'date', required: true, default: 'today' },
       { name: 'invoiceId', label: 'Invoice', type: 'select', source: 'invoices', optLabel: 'number' },
       { name: 'amount', label: 'Amount (₹)', type: 'number' },
       { name: 'mode', label: 'Mode', type: 'select', options: ['Cash','UPI','Bank Transfer','Cheque'] }
@@ -347,7 +347,7 @@ const MODULES = {
     fields: [
       { name: 'platform', label: 'Platform', type: 'select', options: ['Amazon Pay Balance','Flipkart Gift Card','Amazon Gift Card','Paytm Wallet','Other'] },
       { name: 'balance', label: 'Balance (₹) — check the app and update here', type: 'number' },
-      { name: 'lastUpdated', label: 'Last checked on', type: 'date' },
+      { name: 'lastUpdated', label: 'Last checked on', type: 'date', default: 'today' },
       { name: 'notes', label: 'Notes (e.g. card code, expiry)', type: 'text' }
     ]
   },
@@ -374,7 +374,7 @@ const MODULES = {
       { label: 'Amount', field: 'amount', render: v => fmt(v) }
     ],
     fields: [
-      { name: 'date', label: 'Date', type: 'date', required: true },
+      { name: 'date', label: 'Date', type: 'date', required: true, default: 'today' },
       { name: 'type', label: 'Income source', type: 'select', options: ['Interest','Dividend','Rent from Property','Sale Commission','Other'], required: true },
       { name: 'description', label: 'Description', type: 'text' },
       { name: 'amount', label: 'Amount (₹)', type: 'number' }
@@ -420,7 +420,7 @@ const MODULES = {
       { name: 'category', label: 'Document category', type: 'select', options: ['Property Document','Equipment Invoice','Gold Invoice','Aadhar Card','PAN Card','Passport','Other ID','Education Certificate','Other'], required: true },
       { name: 'title', label: 'Title / description', type: 'text', required: true },
       { name: 'driveLink', label: 'Google Drive link (upload the file to Drive, paste the shareable link here)', type: 'text' },
-      { name: 'dateAdded', label: 'Date added', type: 'date' },
+      { name: 'dateAdded', label: 'Date added', type: 'date', default: 'today' },
       { name: 'notes', label: 'Notes', type: 'textarea' }
     ]
   },
@@ -434,7 +434,7 @@ const MODULES = {
     fields: [
       { name: 'title', label: 'Title', type: 'text', required: true },
       { name: 'forWhom', label: 'For', type: 'select', options: ['Everyone','Karan Gupta','Rukmini Gupta','Aahana Gupta','Aarav Gupta'] },
-      { name: 'dateAdded', label: 'Date', type: 'date' },
+      { name: 'dateAdded', label: 'Date', type: 'date', default: 'today' },
       { name: 'message', label: 'Message', type: 'textarea', required: true }
     ]
   }
