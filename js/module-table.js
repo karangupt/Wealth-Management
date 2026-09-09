@@ -167,12 +167,19 @@ function setSelectedTypeTab(moduleKey, tab) {
 
 // Per-module date-period filter (This Month / This Year / All Time) — only
 // active for modules whose MODULES config sets a `dateFilterField` (e.g.
-// Bookings uses 'startDate'). Not persisted to localStorage on purpose:
-// like the search box, it resets to "This Month" on reload.
+// Bookings uses 'startDate'). Defaults to "All Time" — these are reference
+// lists (Bookings, Invoices, Payments, Expenses...), so opening the page
+// should show everything by default, same as before this filter existed.
+// Switching to Monthly/This Year is opt-in, not the default. (Reports is a
+// separate page with its own period state, and intentionally still
+// defaults to the current month — that one really is a "this period"
+// summary rather than a full record list.)
+// Not persisted to localStorage on purpose: like the search box, it resets
+// to "All Time" on reload.
 const modulePeriodState = {}; // { [key]: { mode: 'month'|'year'|'all', month: 'YYYY-MM', year: 'YYYY' } }
 function getModulePeriod(key) {
   if (!modulePeriodState[key]) {
-    modulePeriodState[key] = { mode: 'month', month: todayStr().slice(0, 7), year: todayStr().slice(0, 4) };
+    modulePeriodState[key] = { mode: 'all', month: todayStr().slice(0, 7), year: todayStr().slice(0, 4) };
   }
   return modulePeriodState[key];
 }
