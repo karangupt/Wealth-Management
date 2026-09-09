@@ -333,7 +333,7 @@ function renderInvoicePrintable() {
         ${COMPANY_INFO.addressLines.map(l => `<div>${l}</div>`).join('')}
         <div>Mobile: ${COMPANY_INFO.mobile}</div>
         <div>Email: ${COMPANY_INFO.email}</div>
-        <div style="margin-top:6px;">Udyam Registration No.: ${COMPANY_INFO.udyam}</div>
+        <div style="margin-top:6px;">(MSME) Udyam Registration No.: ${COMPANY_INFO.udyam}</div>
         <div>PAN: ${COMPANY_INFO.pan}</div>
         <div>GSTIN: ${COMPANY_INFO.gstNote}</div>
       </div>
@@ -349,7 +349,7 @@ function renderInvoicePrintable() {
     </div>
 
     <div class="invoice-addr-row">
-      <div><strong>Customer Details / Bill To:</strong><br>${invoiceDraft.customerName}<br>${(invoiceDraft.customerAddress||'').replace(/\n/g,'<br>')}
+      <div><strong>Customer Details / Bill To:</strong><br><strong>${invoiceDraft.customerName}</strong><br>${(invoiceDraft.customerAddress||'').replace(/\n/g,'<br>')}
         ${invoiceDraft.customerGST ? `<br>GSTIN: ${invoiceDraft.customerGST}` : ''}
         ${invoiceDraft.customerEmail ? `<br>Email: ${invoiceDraft.customerEmail}` : ''}
         ${invoiceDraft.contactPersonName ? `<br>Contact: ${invoiceDraft.contactPersonName}${invoiceDraft.contactPersonNumber ? ' (' + invoiceDraft.contactPersonNumber + ')' : ''}` : ''}
@@ -531,7 +531,7 @@ function renderQuotationDocument() {
         <div class="q-addr-heading">${isInvoice ? "Invoice From" : "Quotation From"}</div>
         <strong>${COMPANY_INFO.name}</strong><br>
         ${COMPANY_INFO.addressLines.join('<br>')}<br>
-        Udyam Registration No.: ${COMPANY_INFO.udyam}<br>
+        (MSME) Udyam Registration No.: ${COMPANY_INFO.udyam}<br>
         PAN: ${COMPANY_INFO.pan}<br>
         Phone: ${COMPANY_INFO.mobile}
       </div>
