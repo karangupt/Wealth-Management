@@ -6,17 +6,23 @@ function closeSidebarOnMobile() {
   $('#backdrop').classList.remove('show');
 }
 
+// Guards against initChrome() ever running twice in the same page load. On
+// some mobile browsers (Chrome/Android especially), a backgrounded tab can
+// get silently reloaded/resumed by the OS to save memory; if that resume
+// path re-ran this function, every listener below — most noticeably the
+// hamburger button — would end up bound TWICE. A single tap would then fire
+// the toggle twice in a row (open, then immediately closed again), which
+// looks exactly like "the button stopped responding".
+let chromeInitialized = false;
 function initChrome() {
+  if (chromeInitialized) return;
+  chromeInitialized = true;
   $$('.nav-item').forEach(btn => btn.addEventListener('click', () => navigateTo(btn.dataset.view)));
   $('#hamburger').addEventListener('click', () => {
     $('#sidebar').classList.toggle('open');
     $('#backdrop').classList.toggle('show');
   });
   $('#backdrop').addEventListener('click', closeSidebarOnMobile);
-  // Deliberately NOT closing on backdrop click anymore — mid-entry taps
-  // (e.g. opening a <select>'s dropdown, especially on mobile) were
-  // registering as an outside click and silently discarding everything
-  // typed so far. Closing now only happens via the X button or Cancel.
   $('#modalClose').addEventListener('click', closeModal);
   $('#todayChip').textContent = new Date().toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
 }
@@ -36,7 +42,22 @@ async function showApp() {
   $('#appRoot').style.display = '';
   initChrome();
   checkSyncStatus();
-  navigateTo('dashboard');
+  navigateTo(getRestoreView());
+}
+
+// Picks up wherever the person actually was (Invoices, Bookings, etc.)
+// instead of always resetting to Dashboard — needed because mobile browsers
+// (Chrome/Android in particular) can silently reload a backgrounded tab to
+// save memory, which re-runs this whole boot sequence as if it were a fresh
+// login. Falls back to 'dashboard' if nothing was saved yet, or if the saved
+// view no longer exists (e.g. after a role/module change).
+function getRestoreView() {
+  let saved = null;
+  try { saved = sessionStorage.getItem('workspace_last_view'); } catch (e) {}
+  if (saved && (saved === 'dashboard' || MODULES[saved] || CUSTOM_VIEWS[saved] || PLACEHOLDER_VIEWS[saved])) {
+    return saved;
+  }
+  return 'dashboard';
 }
 
 // Hides sidebar sections the current role has no access to (the actual
