@@ -29,7 +29,11 @@ const MODULES = {
     columns: [
       { label: 'Item', field: 'item', cls: 'name-cell' },
       { label: 'Client', field: 'clientName' },
-      { label: 'Company', field: 'companyName' },
+      { label: 'Company', field: 'companyName', render: (v, row) => {
+          if (v) return v; // manually typed on this booking wins
+          const c = Store.get('customers', row.customerId);
+          return (c && c.companyName) || '—';
+        } },
       { label: 'Location', field: 'location' },
       { label: 'Start', field: 'startDate', render: fmtDate },
       { label: 'End', field: 'endDate', render: fmtDate },
@@ -155,7 +159,11 @@ const MODULES = {
     columns: [
       { label: 'Number', field: 'number', cls: 'name-cell' },
       { label: 'Type', field: 'docType', render: v => v === 'Tax Invoice' ? 'Invoice' : (v || 'Invoice') },
-      { label: 'Company', field: 'companyName' },
+      { label: 'Company', field: 'companyName', render: (v, row) => {
+          if (v) return v; // manually typed on this invoice wins
+          const c = Store.get('customers', row.customerId);
+          return (c && c.companyName) || '—';
+        } },
       { label: 'Date', field: 'date', render: fmtDate },
       { label: 'Amount', field: 'amount', render: v => fmt(v) },
       { label: 'Status', field: 'status', render: v => tagFor(v) },
@@ -209,7 +217,12 @@ const MODULES = {
           const inv = Store.get('invoices', v);
           return inv ? inv.number : '—';
         } },
-      { label: 'Company', field: 'companyName' },
+      { label: 'Company', field: 'companyName', render: (v, row) => {
+          if (v) return v; // manually typed on this payment wins
+          const inv = Store.get('invoices', row.invoiceId);
+          const c = inv ? Store.get('customers', inv.customerId) : null;
+          return (c && c.companyName) || '—';
+        } },
       { label: 'Amount', field: 'amount', render: v => fmt(v) },
       { label: 'Mode', field: 'mode' }
     ],
