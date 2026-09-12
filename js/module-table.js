@@ -413,9 +413,18 @@ function wireModuleView(key) {
     }));
 
   root.querySelectorAll(`[data-edit="${key}"]`).forEach(b =>
-    b.addEventListener('click', () => openModal(key, b.dataset.id)));
+    b.addEventListener('click', () => {
+      // Close the little ⋮ dropdown right away instead of relying on the
+      // "click bubbles up to document" trick below — on some mobile
+      // browsers that bubble doesn't reliably fire once a modal pops open
+      // in the same tap, leaving the dropdown visibly stuck open behind
+      // the modal until something else (like Save) forces a full re-render.
+      root.querySelectorAll('.row-menu-dropdown').forEach(d => d.style.display = 'none');
+      openModal(key, b.dataset.id);
+    }));
   root.querySelectorAll(`[data-del="${key}"]`).forEach(b =>
     b.addEventListener('click', () => {
+      root.querySelectorAll('.row-menu-dropdown').forEach(d => d.style.display = 'none');
       if (confirm('Delete this record?')) {
         Store.remove(MODULES[key].collection, b.dataset.id);
         if (selectedRows[key]) selectedRows[key].delete(b.dataset.id);
