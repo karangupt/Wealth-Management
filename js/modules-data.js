@@ -160,7 +160,13 @@ const MODULES = {
       { label: 'Number', field: 'number', cls: 'name-cell' },
       { label: 'Type', field: 'docType', render: v => v === 'Tax Invoice' ? 'Invoice' : (v || 'Invoice') },
       { label: 'Company', field: 'companyName', render: (v, row) => {
-          if (v) return v; // manually typed on this invoice wins
+          // Most invoices come from Invoice Generator, which only ever
+          // saves a plain 'customerName' (no customerId link) — in this
+          // rental business the "customer" is almost always itself a
+          // company/organisation (e.g. "Vikram Studios"), so that name
+          // doubles as the company name when nothing more specific is set.
+          if (v) return v; // manually typed directly on this invoice wins
+          if (row.customerName) return row.customerName;
           const c = Store.get('customers', row.customerId);
           return (c && c.companyName) || '—';
         } },
@@ -220,7 +226,10 @@ const MODULES = {
       { label: 'Company', field: 'companyName', render: (v, row) => {
           if (v) return v; // manually typed on this payment wins
           const inv = Store.get('invoices', row.invoiceId);
-          const c = inv ? Store.get('customers', inv.customerId) : null;
+          if (!inv) return '—';
+          if (inv.companyName) return inv.companyName;
+          if (inv.customerName) return inv.customerName; // Invoice Generator only ever saves this
+          const c = Store.get('customers', inv.customerId);
           return (c && c.companyName) || '—';
         } },
       { label: 'Amount', field: 'amount', render: v => fmt(v) },
