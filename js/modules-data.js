@@ -155,6 +155,7 @@ const MODULES = {
     columns: [
       { label: 'Number', field: 'number', cls: 'name-cell' },
       { label: 'Type', field: 'docType', render: v => v === 'Tax Invoice' ? 'Invoice' : (v || 'Invoice') },
+      { label: 'Company', field: 'companyName' },
       { label: 'Date', field: 'date', render: fmtDate },
       { label: 'Amount', field: 'amount', render: v => fmt(v) },
       { label: 'Status', field: 'status', render: v => tagFor(v) },
@@ -173,6 +174,7 @@ const MODULES = {
     fields: [
       { name: 'number', label: 'Invoice number', type: 'text', required: true },
       { name: 'customerId', label: 'Customer', type: 'select', source: 'customers', optLabel: 'name' },
+      { name: 'companyName', label: 'Company name', type: 'text' },
       { name: 'date', label: 'Date', type: 'date', default: 'today' },
       { name: 'amount', label: 'Amount (₹)', type: 'number' },
       { name: 'status', label: 'Status', type: 'select', options: ['unpaid','partial','paid'] },
@@ -207,12 +209,14 @@ const MODULES = {
           const inv = Store.get('invoices', v);
           return inv ? inv.number : '—';
         } },
+      { label: 'Company', field: 'companyName' },
       { label: 'Amount', field: 'amount', render: v => fmt(v) },
       { label: 'Mode', field: 'mode' }
     ],
     fields: [
       { name: 'date', label: 'Date', type: 'date', required: true, default: 'today' },
       { name: 'invoiceId', label: 'Invoice', type: 'select', source: 'invoices', optLabel: 'number' },
+      { name: 'companyName', label: 'Company name', type: 'text' },
       { name: 'amount', label: 'Amount (₹)', type: 'number' },
       { name: 'mode', label: 'Mode', type: 'select', options: ['Cash','UPI','Bank Transfer','Cheque'] }
     ]
