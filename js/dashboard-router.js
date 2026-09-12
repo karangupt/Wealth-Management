@@ -219,14 +219,22 @@ function renderDashboard() {
     <div class="section-head"><h2>Recent bookings</h2><button class="btn secondary" onclick="navigateTo('bookingPayments')">View all</button></div>
     ${recentBookings.length ? `
     <div class="table-wrap"><table class="ledger">
-      <thead><tr><th>Item</th><th>Dates</th><th>Amount</th><th>Status</th></tr></thead>
+      <thead><tr><th>Item</th><th>Company</th><th>Dates</th><th>Amount</th><th>Status</th></tr></thead>
       <tbody>
-        ${recentBookings.map(b => `<tr>
+        ${recentBookings.map(b => {
+          // Same fallback rule used on the Bookings page itself: a manually
+          // typed company name wins, otherwise fall back to the linked
+          // Customer record's company name.
+          const c = Store.get('customers', b.customerId);
+          const companyName = b.companyName || (c && c.companyName) || '—';
+          return `<tr>
           <td class="name-cell">${b.item}</td>
+          <td>${companyName}</td>
           <td>${fmtDate(b.startDate)} → ${fmtDate(b.endDate)}</td>
           <td>${fmt(b.amount)}</td>
           <td>${tagFor(b.status)}</td>
-        </tr>`).join('')}
+        </tr>`;
+        }).join('')}
       </tbody>
     </table></div>` : `<div class="empty-state"><div class="glyph"><i data-lucide="calendar-check"></i></div>No bookings yet.</div>`}
   </div>`;
