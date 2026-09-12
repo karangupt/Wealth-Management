@@ -8,6 +8,11 @@ let selectedRows = {}; // { [moduleKey]: Set<rowId> } — checkbox multi-select.
 /* ---------- Router ---------- */
 function navigateTo(view) {
   currentView = view;
+  // Remembered per-tab so a mobile browser silently reloading a backgrounded
+  // tab (common on Android Chrome to save memory) can resume on whatever
+  // page the person was actually looking at, instead of always bouncing
+  // them back to the Dashboard — see showApp() in boot.js.
+  try { sessionStorage.setItem('workspace_last_view', view); } catch (e) {}
   $$('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.view === view));
   $('#viewTitle').textContent = (MODULES[view] && MODULES[view].title)
     || (CUSTOM_VIEWS[view] && CUSTOM_VIEWS[view].title)
