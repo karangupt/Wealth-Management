@@ -146,6 +146,32 @@ function openModal(moduleKey, id) {
   $('#modalBackdrop').classList.add('show');
 }
 
+// Read-only "letter" view for modules that opt in via `viewable: true` (see
+// module-table.js's ⋮ menu). Reuses the same modal shell as Add/Edit but
+// never touches editingContext, never writes to Store, and has no Save
+// button — purely a nicer way to read an existing record, so there's zero
+// risk to existing data from adding this.
+function openViewModal(moduleKey, id) {
+  const cfg = MODULES[moduleKey];
+  const record = Store.get(cfg.collection, id);
+  if (!record) return;
+
+  $('#modalTitle').textContent = record.title || cfg.title.replace(/s$/, '');
+  const form = $('#modalForm');
+  const content = cfg.viewRenderer
+    ? cfg.viewRenderer(record)
+    : `<div style="white-space:pre-wrap;">${JSON.stringify(record, null, 2)}</div>`;
+  form.innerHTML = `
+    ${content}
+    <div class="modal-actions">
+      <button type="button" class="btn secondary" id="closeViewBtn" style="width:100%;">Close</button>
+    </div>`;
+  form.onsubmit = (e) => e.preventDefault(); // read-only — this form never saves anything
+  form.querySelector('#closeViewBtn').addEventListener('click', closeModal);
+
+  $('#modalBackdrop').classList.add('show');
+}
+
 function closeModal() {
   $('#modalBackdrop').classList.remove('show');
   editingContext = null;
