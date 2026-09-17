@@ -452,6 +452,16 @@ const MODULES = {
   },
   familyNotes: {
     title: 'Family Notes', collection: 'familyNotes', icon: 'notebook-pen',
+    // Enables the "View" option in the ⋮ menu (see module-table.js) — opens
+    // this note read-only, styled like a letter, instead of the edit form.
+    viewable: true,
+    viewRenderer: (record) => `
+      <div style="background:#fdfaf3; color:#2a241c; padding:32px 28px; border-radius:8px; font-family:Georgia,'Times New Roman',serif; line-height:1.7; box-shadow:0 4px 18px rgba(0,0,0,.25);">
+        <div style="text-align:right; font-size:12.5px; color:#6b6255; margin-bottom:18px;">${fmtDate(record.dateAdded)}</div>
+        <div style="font-size:13.5px; color:#6b6255; margin-bottom:14px;">Dear ${record.forWhom || 'Family'},</div>
+        <div style="white-space:pre-wrap; font-size:14.5px; margin-bottom:22px;">${(record.message || '').replace(/</g, '&lt;')}</div>
+        <div style="font-size:13px; color:#6b6255;">— ${record.title || 'Family Note'}</div>
+      </div>`,
     columns: [
       { label: 'Title', field: 'title', cls: 'name-cell' },
       { label: 'For', field: 'forWhom' },
