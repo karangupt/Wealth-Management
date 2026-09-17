@@ -352,6 +352,7 @@ function renderModuleView(cfg, key) {
           ${key === 'booking' && r.status === 'completed' ? `<button data-gen-invoice-from-booking="${r.id}">${Store.all('invoices').some(inv => inv.bookingId === r.id) ? '✏️ Edit Invoice' : '🧾 Generate Invoice'}</button>` : ''}
           <button data-row-menu-toggle="${r.id}" style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:16px; padding:2px 8px;">⋮</button>
           <div class="row-menu-dropdown" data-row-menu="${r.id}" style="display:none; position:absolute; right:8px; top:100%; z-index:30; background:var(--panel); border:1px solid var(--line); border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,.3); min-width:110px;">
+            ${cfg.viewable ? `<button data-view="${key}" data-id="${r.id}" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:var(--text); cursor:pointer; font-size:13px;">View</button>` : ''}
             <button data-edit="${key}" data-id="${r.id}" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:var(--text); cursor:pointer; font-size:13px;">Edit</button>
             <button data-del="${key}" data-id="${r.id}" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:var(--danger); cursor:pointer; font-size:13px;">Delete</button>
           </div>
@@ -412,6 +413,11 @@ function wireModuleView(key) {
       generateInvoiceFromBooking(b.dataset.genInvoiceFromBooking);
     }));
 
+  root.querySelectorAll(`[data-view="${key}"]`).forEach(b =>
+    b.addEventListener('click', () => {
+      root.querySelectorAll('.row-menu-dropdown').forEach(d => d.style.display = 'none');
+      openViewModal(key, b.dataset.id);
+    }));
   root.querySelectorAll(`[data-edit="${key}"]`).forEach(b =>
     b.addEventListener('click', () => {
       // Close the little ⋮ dropdown right away instead of relying on the
