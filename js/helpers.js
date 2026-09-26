@@ -45,7 +45,7 @@ const COMPANY_INFO = {
   bankAccNo: '10165752073',
   bankAccName: 'Karan Gupta',
   bankBranchIfsc: 'Pune Branch & IDFB0041352',
-  upiId: '9820889679@okbizaxis',
+  upiId: '9819952683@idfcfirst',
   paymentLink: 'https://razorpay.me/@projectorsolutions'
 };
 
