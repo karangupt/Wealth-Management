@@ -439,7 +439,7 @@ function renderInvoicePrintable() {
       <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
         <div>
           <strong>Mode of Payment: Only Digital Payments Accepted (Bank Transfer / UPI / NEFT / RTGS). Cash Payment Not Accepted.</strong><br>
-          GPay: UPI ID: ${COMPANY_INFO.upiId}<br>
+          UPI ID: ${COMPANY_INFO.upiId}<br>
           Online Payment Link: <a href="${COMPANY_INFO.paymentLink}">${COMPANY_INFO.paymentLink}</a><br>
           *If payment is made using a Credit Card, an additional 2.5% processing charge will be applicable
         </div>
@@ -575,7 +575,7 @@ function renderQuotationDocument() {
     <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-top:16px; border-top:1px solid #ddd; padding-top:12px;">
       <div style="font-size:11px;">
         <strong>Mode of Payment: Only Digital Payments Accepted (Bank Transfer / UPI / NEFT / RTGS). Cash Payment Not Accepted.</strong><br>
-        GPay: UPI ID: ${COMPANY_INFO.upiId}<br>
+        UPI ID: ${COMPANY_INFO.upiId}<br>
         Online Payment Link: <a href="${COMPANY_INFO.paymentLink}">${COMPANY_INFO.paymentLink}</a><br>
         *If payment is made using a Credit Card, an additional 2.5% processing charge will be applicable
         ${invoiceDraft.paid ? `
